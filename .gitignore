@@ -1,0 +1,9 @@
+*~
+*.dll
+*.dylib
+*.exe
+*.out
+*.so
+*.test
+/.idea
+/testdata

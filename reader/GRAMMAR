@@ -1,0 +1,13 @@
+file ::= section* EndOfInput .
+
+section ::= tags .
+
+tags ::= TypeTag EndOfLine tag* EndOfSection .
+
+tag ::= ( description | label )+ endOfRecord .
+
+description ::= D text EndOfLine .
+
+label ::= N text EndOfLine .
+
+endOfRecord ::= Caret EndOfLine .
