@@ -40,11 +40,11 @@ import (
 func main() {
 	fs := flag.NewFlagSet("my-program", flag.ExitOnError)
 	var (
-		input  = fs.String("input", "", "QIF file to translate")
-		accts  = fs.String("accounts", "", "file to write accounts to")
-		cats   = fs.String("categories", "", "file to write categories to")
-		trans  = fs.String("transactions", "", "file to write transactions to")
-		_      = fs.String("config", "", "config file (optional)")
+		input = fs.String("input", "", "QIF file to translate")
+		accts = fs.String("accounts", "", "file to write accounts to")
+		cats  = fs.String("categories", "", "file to write categories to")
+		trans = fs.String("transactions", "", "file to write transactions to")
+		_     = fs.String("config", "", "config file (optional)")
 	)
 
 	if err := ff.Parse(fs, os.Args[1:], ff.WithEnvVarPrefix("QIFXLAT"), ff.WithConfigFileFlag("config"), ff.WithConfigFileParser(ff.PlainParser)); err != nil {
@@ -163,6 +163,7 @@ func run(name, accounts, categories, transactions string) error {
 		normalized := transformer.NormalizeSplits(r.Transactions)
 
 		type Split struct {
+			Line     int    `json:"line,omitempty"`
 			Account  string `json:"account,omitempty"`
 			Amount   string `json:"amount,omitempty"`
 			Category string `json:"category,omitempty"`
@@ -197,6 +198,7 @@ func run(name, accounts, categories, transactions string) error {
 			}
 			for _, line := range transaction.Split {
 				split := Split{
+					Line:     line.Line,
 					Account:  line.Account,
 					Amount:   line.Amount,
 					Category: line.Category,
